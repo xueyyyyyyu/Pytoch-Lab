@@ -2,9 +2,9 @@ import pandas as pd
 from torch.utils.data import Dataset
 
 
-class IMDBTrainingDataset(Dataset):
-    def __init__(self, train_file, transform=None, target_transform=None):
-        self.vectors_labels = pd.read_csv(train_file)
+class IMDBDataset(Dataset):
+    def __init__(self, file, transform=None, target_transform=None):
+        self.vectors_labels = pd.read_csv(file)
 
     def __len__(self):
         return len(self.vectors_labels)
