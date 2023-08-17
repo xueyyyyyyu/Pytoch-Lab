@@ -1,6 +1,5 @@
 import pandas as pd
 from torch.utils.data import Dataset
-from torchvision.io import read_image
 
 
 class IMDBTrainingDataset(Dataset):
@@ -8,7 +7,7 @@ class IMDBTrainingDataset(Dataset):
         self.vectors_labels = pd.read_csv(train_file)
 
     def __len__(self):
-        return len(self.img_label)
+        return len(self.vectors_labels)
 
     def __getitem__(self, idx):
         vector = self.vectors_labels.iloc[idx, 0]
