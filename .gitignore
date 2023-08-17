@@ -1,0 +1,5 @@
+.idea
+word2vec.model
+data
+model
+*.csv
