@@ -5,8 +5,8 @@ import pandas as pd
 from gensim.utils import simple_preprocess
 
 
-if __name__ == "__main__":
-    data = pd.read_csv('data/train.csv')  # 对于其他数据集改变这里的文件名
+def word2vector(source_file, target_file):
+    data = pd.read_csv(source_file)
     processed_texts = []
     # 处理文本
     for text in data['review']:
@@ -19,7 +19,7 @@ if __name__ == "__main__":
         processed_texts.append(processed_text)
 
     model = Word2Vec(sentences=processed_texts, vector_size=100, window=5, min_count=1, workers=4)
-    model.save("word2vec.model")
+    model.save("model/word2vector")
 
     # 创建一个空列表来存储数据
     data_list = []
@@ -42,5 +42,10 @@ if __name__ == "__main__":
     vectors_df = pd.DataFrame(data_list, columns=['vector_array', 'sentiment'])
 
     # 将 DataFrame 存储为新的 CSV 文件
-    vectors_df.to_csv('data/vectors_train.csv', index=False)
+    vectors_df.to_csv(target_file, index=False)
 
+
+if __name__ == "__main__":
+    word2vector('data/train.csv', 'data/vectors_train.csv')
+    word2vector('data/val.csv', 'data/vectors_validate.csv')
+    word2vector('data/test.csv', 'data/vectors_test.csv')

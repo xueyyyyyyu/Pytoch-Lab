@@ -2,5 +2,4 @@
 data
 model
 __pycache__
-test.py
-word2vec.model
+tmp

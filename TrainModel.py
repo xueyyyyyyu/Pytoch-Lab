@@ -1,4 +1,5 @@
 import torch
+from torch import nn, optim
 from torch.utils.data import DataLoader
 from IMDBDataset import IMDBDataset
 from MyLSTM import MyLSTM
@@ -42,8 +43,8 @@ if __name__ == "__main__":
 
     # Define model, loss function, and optimizer
     model = MyLSTM(100, 128).to(device)
-    loss_fn = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
+    loss_fn = nn.CrossEntropyLoss()
+    optimizer = optim.SGD(model.parameters(), lr=0.001)
 
     # Training loop
     for t in range(epochs):

@@ -1,8 +1,6 @@
 import torch
 from torch import nn
 from torch.autograd import Variable
-from torch.utils.data import DataLoader
-from IMDBDataset import IMDBDataset
 
 
 # Define model
@@ -29,53 +27,3 @@ class MyLSTM(nn.Module):
         # 将 LSTM 输出送入全连接层
         output = self.fc(lstm_out[:, -1, :])  # 取最后一个时间步的输出
         return output
-
-
-if __name__ == '__main__':
-    training_data = IMDBDataset(file='data/vectors_train.csv')
-    test_data = IMDBDataset(file='data/vectors_test.csv')
-
-    batch_size = 64
-
-    # Create data loaders.
-    # 这个也是标准用法，只要按照要求自定义数据集，就可以用标准的 dataloader 加载数据
-    train_dataloader = DataLoader(training_data, batch_size=batch_size)
-    test_dataloader = DataLoader(test_data, batch_size=batch_size)
-    device = (
-        "cuda"
-        if torch.cuda.is_available()
-        else "mps"
-        if torch.backends.mps.is_available()
-        else "cpu"
-    )
-    print(f"Using {device} device")
-
-    model = MyLSTM().to(device)
-
-    loss_fn = nn.CrossEntropyLoss()  # 课上我们说过，loss 类型是可以选择的
-    optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)  # 这里的优化器也是可以选择的
-
-    epochs = 5  # 这个训练的轮数也可以设置
-
-    # 下面这个训练和测试的过程也是标准形式，我们用自己的数据也还是这样去写
-    for t in range(epochs):
-        print(f"Epoch {t + 1}\n-------------------------------")
-        train(train_dataloader, model, loss_fn, optimizer)
-        test(test_dataloader, model, loss_fn)
-    print("Done!")
-
-    torch.save(model.state_dict(), "model/TrainModel")  # 模型可以保存下来，这里 model 文件夹要和当前 py 文件在同一个目录下
-    print("Saved PyTorch Model State to the project root folder!")
-
-    classes = [
-        "positive",
-        "negative"
-    ]
-
-    model.eval()
-    x, y = test_data[0][0], test_data[0][1]
-    with torch.no_grad():
-        x = x.to(device)
-        pred = model(x)
-        predicted, actual = classes[pred[0].argmax(0)], classes[y]
-        print(f'Predicted: "{predicted}", Actual: "{actual}"')
