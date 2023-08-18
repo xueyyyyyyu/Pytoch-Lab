@@ -1,5 +1,6 @@
 .idea
-word2vec.model
 data
 model
-*.csv
+__pycache__
+test.py
+word2vec.model

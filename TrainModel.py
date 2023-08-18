@@ -27,7 +27,7 @@ if __name__ == "__main__":
     epochs = 5
 
     # Load training data
-    training_data = IMDBDataset(file='vectors_train.csv')
+    training_data = IMDBDataset(file='data/vectors_train.csv')
     # Create data loaders.
     # 这个也是标准用法，只要按照要求自定义数据集，就可以用标准的 dataloader 加载数据
     train_dataloader = DataLoader(training_data, batch_size=batch_size)

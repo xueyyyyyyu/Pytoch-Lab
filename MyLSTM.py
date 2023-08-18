@@ -32,8 +32,8 @@ class MyLSTM(nn.Module):
 
 
 if __name__ == '__main__':
-    training_data = IMDBDataset(file='vectors_train.csv')
-    test_data = IMDBDataset(file='vectors_test.csv')
+    training_data = IMDBDataset(file='data/vectors_train.csv')
+    test_data = IMDBDataset(file='data/vectors_test.csv')
 
     batch_size = 64
 

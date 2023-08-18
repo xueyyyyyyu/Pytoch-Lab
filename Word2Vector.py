@@ -6,7 +6,7 @@ from gensim.utils import simple_preprocess
 
 
 if __name__ == "__main__":
-    data = pd.read_csv('train.csv')  # 对于其他数据集改变这里的文件名
+    data = pd.read_csv('data/train.csv')  # 对于其他数据集改变这里的文件名
     processed_texts = []
     # 处理文本
     for text in data['review']:
@@ -42,5 +42,5 @@ if __name__ == "__main__":
     vectors_df = pd.DataFrame(data_list, columns=['vector_array', 'sentiment'])
 
     # 将 DataFrame 存储为新的 CSV 文件
-    vectors_df.to_csv('vectors_train.csv', index=False)
+    vectors_df.to_csv('data/vectors_train.csv', index=False)
 

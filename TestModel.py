@@ -27,7 +27,7 @@ if __name__ == "__main__":
     epochs = 5
 
     # Load test data
-    test_data = IMDBDataset(file='vectors_test.csv')
+    test_data = IMDBDataset(file='data/vectors_test.csv')
     test_dataloader = DataLoader(test_data, batch_size=batch_size)
     device = (
         "cuda"
