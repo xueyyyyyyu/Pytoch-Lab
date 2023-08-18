@@ -1,6 +1,5 @@
-import ast
+import json
 
-import numpy as np
 import pandas as pd
 from torch.utils.data import Dataset
 
@@ -13,8 +12,9 @@ class IMDBDataset(Dataset):
         return len(self.vectors_labels)
 
     def __getitem__(self, idx):
-        vector = self.vectors_labels.iloc[idx, 0]
+        vector_str = self.vectors_labels.iloc[idx, 0]
         label = self.vectors_labels.iloc[idx, 1]
 
-        return vector, label
+        vector_list_list = json.loads(vector_str)
+        return vector_list_list, label
 
