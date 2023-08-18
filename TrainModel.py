@@ -4,7 +4,7 @@ from IMDBDataset import IMDBDataset
 from MyLSTM import MyLSTM
 
 
-def train(dataloader, model, loss_fn, optimizer):  # 模型训练过程的定义；这个可以看作是模板，以后写 pytorch 程序基本都这样
+def train(dataloader, model, loss_fn, optimizer, device):  # 模型训练过程的定义；这个可以看作是模板，以后写 pytorch 程序基本都这样
     size = len(dataloader.dataset)
     model.train()
     for batch, (X, y) in enumerate(dataloader):
@@ -41,11 +41,15 @@ if __name__ == "__main__":
     print(f"Using {device} device")
 
     # Define model, loss function, and optimizer
-    model = MyLSTM()
+    model = MyLSTM(100, 128).to(device)
     loss_fn = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
 
     # Training loop
-    for epoch in range(epochs):
-        print(f"Epoch {epoch + 1}/{epochs}")
-        train(train_dataloader, model, loss_fn, optimizer)
+    for t in range(epochs):
+        print(f"Epoch {t + 1}\n-------------------------------")
+        train(train_dataloader, model, loss_fn, optimizer, device)
+    print("Done!")
+
+    torch.save(model.state_dict(), "model/TrainModel")  # 模型可以保存下来，这里 model 文件夹要和当前 py 文件在同一个目录下
+    print("Saved PyTorch Model State to the project root folder!")
