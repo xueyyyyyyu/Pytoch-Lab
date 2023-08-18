@@ -2,7 +2,6 @@ import ast
 
 import numpy as np
 import pandas as pd
-from torch import tensor, float32
 from torch.utils.data import Dataset
 
 
@@ -14,9 +13,8 @@ class IMDBDataset(Dataset):
         return len(self.vectors_labels)
 
     def __getitem__(self, idx):
-        vector_str = self.vectors_labels.iloc[idx, 0]
+        vector = self.vectors_labels.iloc[idx, 0]
         label = self.vectors_labels.iloc[idx, 1]
 
-        vector = np.array(eval(vector_str))
         return vector, label
 

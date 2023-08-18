@@ -52,5 +52,5 @@ if __name__ == "__main__":
         train(train_dataloader, model, loss_fn, optimizer, device)
     print("Done!")
 
-    torch.save(model.state_dict(), "model/TrainModel")  # 模型可以保存下来，这里 model 文件夹要和当前 py 文件在同一个目录下
+    torch.save(model.state_dict(), "model/TCModel")  # 模型可以保存下来，这里 model 文件夹要和当前 py 文件在同一个目录下
     print("Saved PyTorch Model State to the project root folder!")
