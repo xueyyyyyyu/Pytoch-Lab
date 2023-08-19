@@ -2,9 +2,9 @@ import pandas as pd
 from nltk.tokenize import word_tokenize
 
 # 加载划分后的数据集，假设数据保存在 train.csv、val.csv 和 test.csv 中
-train_data = pd.read_csv('data/train.csv')
-val_data = pd.read_csv('data/val.csv')
-test_data = pd.read_csv('data/test.csv')
+train_data = pd.read_csv('data/split/train.csv')
+val_data = pd.read_csv('data/split/val.csv')
+test_data = pd.read_csv('data/split/test.csv')
 sum_data = pd.read_csv('data/IMDB_Dataset.csv')
 
 

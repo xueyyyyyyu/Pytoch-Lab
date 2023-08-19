@@ -9,7 +9,7 @@ def train(dataloader, model, loss_fn, optimizer, device):  # 模型训练过程�
     size = len(dataloader.dataset)
     model.train()
     for batch, (X, y) in enumerate(dataloader):
-        X, y = tensor(X).to(device), y.to(device)
+        X, y = X.to(device), y.to(device)
         # Compute prediction error
         pred = model(X)
         loss = loss_fn(pred, y)
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     epochs = 5
 
     # Load training data
-    training_data = IMDBDataset(file='data/final/train.csv')
+    training_data = IMDBDataset(file='data/final/validate.csv')
     # Create data loaders.
     # 这个也是标准用法，只要按照要求自定义数据集，就可以用标准的 dataloader 加载数据
     train_dataloader = DataLoader(training_data, batch_size=batch_size)

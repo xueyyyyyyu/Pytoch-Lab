@@ -1,6 +1,5 @@
-import json
-
 import pandas as pd
+from torch import tensor, float32
 from torch.utils.data import Dataset
 
 
@@ -14,7 +13,6 @@ class IMDBDataset(Dataset):
     def __getitem__(self, idx):
         vector_str = self.vectors_labels.iloc[idx, 0]
         label = self.vectors_labels.iloc[idx, 1]
-
-        vector_list_list = json.loads(vector_str)
-        return vector_list_list, label
+        vectors_tensor = tensor(eval(vector_str), dtype=float32)
+        return vectors_tensor, label
 

@@ -1,51 +1,64 @@
 import re
-import numpy as np
 from gensim.models import Word2Vec
 import pandas as pd
 from gensim.utils import simple_preprocess
 
 
+def pre_process(source_file, target_file):
+    data = pd.read_csv(source_file)
+
+    def pre(text):
+        cleaned_text = re.sub(r'<.*?>', '', text)
+        processed_text = simple_preprocess(cleaned_text, min_len=1, deacc=False)
+        processed_text_string = ' '.join(processed_text)
+        return processed_text_string
+
+    data['review'] = data['review'].apply(pre)
+
+    data.to_csv(target_file, index=False)
+
+
 def word2vector(source_file, target_file):
     data = pd.read_csv(source_file)
-    processed_texts = []
-    # 处理文本
-    for text in data['review']:
-        # print(text)
-        # 去除HTML标签
-        cleaned_text = re.sub(r'<.*?>', '', text)
-        # 进行文本预处理（去掉标点，小写化等）
-        processed_text = simple_preprocess(cleaned_text, min_len=1, deacc=False)
-        # print(processed_text)
-        processed_texts.append(processed_text)
 
-    model = Word2Vec(sentences=processed_texts, vector_size=100, window=5, min_count=1, workers=4)
+    model = Word2Vec(sentences=data['review'], vector_size=100, window=5, min_count=1, workers=4)
     model.save("model/word2vector")
 
-    # 创建一个空列表来存储数据
-    data_list = []
-
-    for i, processed_text in enumerate(processed_texts):
+    def get_vector(text):
         vectors = []
-        for word in processed_text:
-            vector = model.wv[word]
-            vectors.append(vector.tolist())
+        words = text.split()
+        for word in words:
+            if word in model.wv:
+                vectors.append(model.wv[word])
+        return vectors
 
-        label = data.loc[i, 'sentiment']
+    data['review'] = data['review'].apply(get_vector)
 
-        # 将向量列表转换为 NumPy 数组
-        vector_array = np.array(vectors)
+    data.to_csv(target_file, index=False)
 
-        # 将向量数组和情感标签添加到列表中
-        data_list.append([vector_array, label])
 
-    # 创建 DataFrame
-    vectors_df = pd.DataFrame(data_list, columns=['vector_array', 'sentiment'])
+def simplify(source_file, target_file):
+    # 读取CSV文件
+    data = pd.read_csv(source_file)
 
-    # 将 DataFrame 存储为新的 CSV 文件
-    vectors_df.to_csv(target_file, index=False)
+    # 替换
+    data['review'] = data['review'].str.replace("array(", "", regex=False)
+    data['review'] = data['review'].str.replace("dtype=float32),", "", regex=False)
+    data['review'] = data['review'].str.replace("dtype=float32)", "", regex=False)
+
+    # 将修改后的数据保存回CSV文件
+    data.to_csv(target_file, index=False)
 
 
 if __name__ == "__main__":
-    word2vector('data/train.csv', 'data/vectors_train.csv')
-    word2vector('data/val.csv', 'data/vectors_validate.csv')
-    word2vector('data/test.csv', 'data/vectors_test.csv')
+    pre_process('data/split/train.csv', 'data/pre/train.csv')
+    word2vector('data/pre/train.csv', 'data/vectors/train.csv')
+    simplify('data/vectors/train.csv', 'data/final/train.csv')
+
+    pre_process('data/split/val.csv', 'data/pre/validate.csv')
+    word2vector('data/pre/validate.csv', 'data/vectors/validate.csv')
+    simplify('data/vectors/validate.csv', 'data/final/validate.csv')
+
+    pre_process('data/split/test.csv', 'data/pre/test.csv')
+    word2vector('data/pre/test.csv', 'data/vectors/test.csv')
+    simplify('data/vectors/test.csv', 'data/final/test.csv')

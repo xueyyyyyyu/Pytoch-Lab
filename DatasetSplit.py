@@ -10,10 +10,10 @@ validation_data, test_data, validation_labels, test_labels = train_test_split(te
 
 # 将划分后的数据保存为 CSV 文件
 train_df = pd.DataFrame({'review': train_data, 'sentiment': train_labels})
-train_df.to_csv('data/train.csv', index=False)
+train_df.to_csv('data/split/train.csv', index=False)
 
 validation_df = pd.DataFrame({'review': validation_data, 'sentiment': validation_labels})
-validation_df.to_csv('data/val.csv', index=False)
+validation_df.to_csv('data/split/val.csv', index=False)
 
 test_df = pd.DataFrame({'review': test_data, 'sentiment': test_labels})
-test_df.to_csv('data/test.csv', index=False)
+test_df.to_csv('data/split/test.csv', index=False)
