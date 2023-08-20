@@ -50,6 +50,27 @@ def simplify(source_file, target_file):
     data.to_csv(target_file, index=False)
 
 
+# def add0(source_file, target_file):
+#     # 读取CSV文件
+#     data = pd.read_csv(source_file)
+#
+#     max_length = max(len(eval(vector_str)) for vector_str in data['review'])
+#
+#     # 零向量
+#     zero_vector = [0.0] * 100  # 100维的零向量
+#
+#     # 填充向量并添加零向量
+#     filled_vectors = []
+#     for vector_str in data['review']:
+#         vector = eval(vector_str)
+#         padded_vector = vector + zero_vector * (max_length - len(vector))
+#         filled_vectors.append(padded_vector)
+#
+#     data['review'] = filled_vectors
+#
+#     data.to_csv(target_file, index=False)
+
+
 if __name__ == "__main__":
     pre_process('data/split/train.csv', 'data/pre/train.csv')
     word2vector('data/pre/train.csv', 'data/vectors/train.csv')
@@ -58,6 +79,7 @@ if __name__ == "__main__":
     pre_process('data/split/val.csv', 'data/pre/validate.csv')
     word2vector('data/pre/validate.csv', 'data/vectors/validate.csv')
     simplify('data/vectors/validate.csv', 'data/final/validate.csv')
+    # add0('data/final/validate.csv', 'data/new/validate.csv')
 
     pre_process('data/split/test.csv', 'data/pre/test.csv')
     word2vector('data/pre/test.csv', 'data/vectors/test.csv')
